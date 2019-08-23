@@ -1,12 +1,13 @@
 const unobstructedWestViewCount = buildings => {
-  const unobstructedWestViewHeights = buildings.reduce((candidateHeights, height) => {
-    if (height < candidateHeights[candidateHeights.length - 1]) {
-      return [...candidateHeights, height]
-    }
-    const shorterIndex = candidateHeights.findIndex(element => element <= height)
-    return [...candidateHeights.slice(0, shorterIndex), height]
-  }, [])
-  return unobstructedWestViewHeights.length
+  const duplicate = [...buildings]
+  let count = 0
+  for (let i = 0; i < buildings.length; i++) {
+    duplicate.shift()
+    const currentBuilding = buildings[i]
+    const canSee = !duplicate.some(building => currentBuilding <= building)
+    if (canSee) count += 1
+  }
+  return count
 }
 
 module.exports = { unobstructedWestViewCount }
